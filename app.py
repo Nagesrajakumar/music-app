@@ -23,8 +23,8 @@ def success(name):
     return 'welcome %s' % name
  
  
-@app.route('/login', methods=['GET'])
-def login():
+@app.route('/home', methods=['GET'])
+def home():
     return render_template("home.html")
  
 # main driver function
