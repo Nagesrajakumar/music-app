@@ -1,35 +1,31 @@
-# Importing flask module in the project is mandatory
-# An object of Flask class is our WSGI application.
 from flask import Flask, redirect, url_for, request, render_template
- 
-# Flask constructor takes the name of
-# current module (__name__) as argument.
+import sqlite3
 app = Flask(__name__)
- 
-# The route() function of the Flask class is a decorator,
-# which tells the application which URL should call
-# the associated function.
+
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
 @app.route('/')
-# ‘/’ URL is bound with hello_world() function.
-def hello():
-    return 'Hello World'
+def root():
+    return redirect(url_for('home'))
 
-@app.route('/hello/<name>')
-def hello_name(name):
-   return 'Hello %s!' % name
-
-@app.route('/success/<name>')
-def success(name):
-    return 'welcome %s' % name
- 
- 
 @app.route('/home', methods=['GET'])
 def home():
-    return render_template("home.html")
- 
+    conn = get_db_connection()
+    songs = conn.execute('SELECT * FROM songs').fetchall()
+    conn.close()
+    return render_template("home.html",songs=songs)
+
+@app.route('/player/<id>', methods=['GET'])
+def player(id):
+    return render_template("player.html",id=id)
+
+@app.route('/upload')
+def upload():
+    return render_template("upload.html")
 # main driver function
 if __name__ == '__main__':
- 
-    # run() method of Flask class runs the application
-    # on the local development server.
+
     app.run()

@@ -1,21 +1,13 @@
-<html>
-<body>	
-	<form action = "http://localhost:5000/login" method = "post">
-		
+{% extends 'base.html' %}
 
-<p>Enter Name:</p>
-
-
-		
-
-<p><input type = "text" name = "nm" /></p>
-
-
-		
-
-<p><input type = "submit" value = "submit" /></p>
-
-
-	</form>	
-</body>
-</html>
+{% block content %}
+    <h1>{% block title %} Songs {% endblock %}</h1>
+    {% for song in songs %}
+        <div class='song'>
+            <p>{{ song['created'] }}</p>
+            <h2>{{ song['title'] }}</h2>
+            <p>{{ song['artist'] }}</p>
+			<a href="/player/{{song['id']}}">play</a>
+        </div>
+    {% endfor %}
+{% endblock %}
