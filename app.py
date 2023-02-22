@@ -1,7 +1,9 @@
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, flash, jsonify, redirect, url_for, request, render_template
+from flask_cors import CORS
 import sqlite3
 app = Flask(__name__)
-
+CORS(app)
+app.config['SECRET_KEY'] = '12345'
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
@@ -22,9 +24,35 @@ def home():
 def player(id):
     return render_template("player.html",id=id)
 
-@app.route('/upload')
+@app.route('/upload', methods=['GET','POST'])
 def upload():
-    return render_template("upload.html")
+    if(request.method == 'POST'):
+        title = request.form['title']
+        artist = request.form['artist']
+        if not title:
+            response = jsonify("Title cannot be empty")
+            return response;
+        elif not artist:
+            response = jsonify("Artist name cannot be empty")
+            return response;
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute('INSERT INTO songs (title,artist) VALUES (?, ?) RETURNING id',(title,artist))
+            row = cursor.fetchone()
+            (inserted_id, ) = row if row else None
+            file = request.files['file']
+            print(file)
+            if(file.filename != ""):
+                file.save(str(inserted_id)+".mp3")
+
+            response = jsonify("File received and saved!")
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            conn.commit()
+            conn.close()
+            return response
+    if(request.method):
+        return render_template("upload.html")
 # main driver function
 if __name__ == '__main__':
 

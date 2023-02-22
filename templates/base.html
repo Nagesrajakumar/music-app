@@ -12,7 +12,7 @@
 
         nav a {
             color: #d64161;
-            font-size: 3em;
+            font-size: 2rem;
             margin-left: 50px;
             text-decoration: none;
         }
@@ -32,8 +32,23 @@
     async function upload(){
         var input = document.querySelector('input[type=file]');
         var file = input.files[0];
+        var title = document.getElementById("title").value;
+        var artist = document.getElementById("artist").value;
+        //converting file to blob
         var fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {type: file.type });
 
+        var fd = new FormData();
+        fd.append('file', fileBlob, 'file');
+        fd.append("title",title);
+        fd.append("artist",artist);
+
+        fetch('http://127.0.0.1:5000/upload', {
+          method: 'POST',
+          body: fd
+        }).then(response => response.json()
+        ).then(json => {
+            console.log(json)
+        });
         
     }
     async function preview(){

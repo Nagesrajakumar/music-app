@@ -2,6 +2,24 @@
 
 {% block content %}
     <h1>{% block title %} Upload {% endblock %}</h1>
-    <input type="file" id="musicFile">
+    <label for="title">Title</label>
+    <br>
+    <input type="text" name="title"
+            id="title"
+            placeholder="Song Title"
+            value="{{ request.form['title'] }}"></input>
+    <br><br>
+    <label for="artist">Artist</label>
+    <br>
+    <input type="text" name="artist"
+            id="artist"
+            placeholder="Artist Name"
+            value="{{ request.form['artist'] }}"></input>
+            <br><br>
+    <label for="title">Upload Music File</label>
+    <br>
+    <input type="file" name="upload" id="musicFile">
+    <br><br>
     <button type="button" onclick="preview()">preview</button>
+    <button type="button" onclick="upload()">upload</button>
 {% endblock %}
