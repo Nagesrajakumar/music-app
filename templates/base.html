@@ -28,4 +28,26 @@
         {% block content %} {% endblock %}
     </div>
 </body>
+<script>
+    async function upload(){
+        var input = document.querySelector('input[type=file]');
+        var file = input.files[0];
+        var fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {type: file.type });
+
+        
+    }
+    async function preview(){
+        var input = document.querySelector('input[type=file]');
+        var file = input.files[0];
+        var fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {type: file.type });
+
+        var player = document.createElement("AUDIO");
+
+        if (player.canPlayType("audio/mpeg")) {
+            player.setAttribute("src",URL.createObjectURL(fileBlob));
+        }
+        player.setAttribute("controls", "controls");
+        document.body.appendChild(player);
+    }
+</script>
 </html>
