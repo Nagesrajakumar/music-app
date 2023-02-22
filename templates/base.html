@@ -45,10 +45,10 @@
         fetch('http://127.0.0.1:5000/upload', {
           method: 'POST',
           body: fd
-        }).then(response => response.json()
-        ).then(json => {
-            console.log(json)
-        });
+        }).then(()=>{
+            window.location.replace('http://127.0.0.1:5000/home');
+        }
+        );
         
     }
     async function preview(){
@@ -63,6 +63,11 @@
         }
         player.setAttribute("controls", "controls");
         document.body.appendChild(player);
+    }
+    function search(){
+        var search_string = document.getElementById("search").value;
+        window.location.replace('http://127.0.0.1:5000/home?search='+search_string);
+
     }
 </script>
 </html>

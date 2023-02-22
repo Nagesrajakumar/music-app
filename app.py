@@ -16,10 +16,12 @@ def root():
 
 @app.route('/home', methods=['GET'])
 def home():
+    search_string = request.args.get("search", default="", type=str)
     conn = get_db_connection()
     songs = conn.execute('SELECT * FROM songs').fetchall()
     conn.close()
-    return render_template("home.html",songs=songs)
+    filtered_songs = filter(lambda song: search_string in song['title'] or search_string in song['artist'], songs)
+    return render_template("home.html",songs=filtered_songs, search_string=search_string)
 
 @app.route('/player/<id>', methods=['GET'])
 def player(id):
