@@ -1,4 +1,4 @@
-from flask import Flask, flash, jsonify, redirect, url_for, request, render_template
+from flask import Flask, flash, jsonify, redirect, send_file, url_for, request, render_template
 from flask_cors import CORS
 import sqlite3
 app = Flask(__name__)
@@ -22,7 +22,11 @@ def home():
 
 @app.route('/player/<id>', methods=['GET'])
 def player(id):
-    return render_template("player.html",id=id)
+    try:
+        return send_file(str(id)+'.mp3')
+    except Exception as e:
+        return str(e)
+    #return render_template("player.html",id=id)
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():
