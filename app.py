@@ -1,6 +1,7 @@
 from flask import Flask, flash, jsonify, redirect, send_file, url_for, request, render_template
 from flask_cors import CORS
 import sqlite3
+import os
 app = Flask(__name__)
 CORS(app)
 app.config['SECRET_KEY'] = '12345'
@@ -27,7 +28,15 @@ def player(id):
     except Exception as e:
         return str(e)
     #return render_template("player.html",id=id)
-
+@app.route('/delete/<id>',methods=['GET'])
+def delete_song(id):
+    conn = get_db_connection()
+    delete_query = 'DELETE FROM songs WHERE id=?'
+    cur = conn.cursor()
+    cur.execute(delete_query, (id,))
+    os.remove(str(id)+".mp3")
+    conn.commit()
+    return redirect(url_for('home'))
 @app.route('/upload', methods=['GET','POST'])
 def upload():
     if(request.method == 'POST'):

@@ -8,6 +8,7 @@
             <h2>{{ song['title'] }}</h2>
             <p>{{ song['artist'] }}</p>
 			<a href="/player/{{song['id']}}">play</a>
+            <a href="/delete/{{song['id']}}">delete</a>
         </div>
     {% endfor %}
 {% endblock %}
