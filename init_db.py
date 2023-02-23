@@ -8,12 +8,12 @@ with open('schema.sql') as f:
 
 # cur = connection.cursor()
 
-# cur.execute("INSERT INTO songs (title, artist) VALUES (?, ?)",
-#             ('Beast Mode', 'Anirudh')
+# cur.execute("INSERT INTO songs (title, artist, album) VALUES (?, ?)",
+#             ('Beast Mode', 'Anirudh', 'Beast')
 #             )
 
-# cur.execute("INSERT INTO songs (title, artist) VALUES (?, ?)",
-#             ('Take You', 'Justin Bieber')
+# cur.execute("INSERT INTO songs (title, artist, album) VALUES (?, ?)",
+#             ('Take You', 'Justin Bieber', 'Believe')
 #             )
 
 # connection.commit()

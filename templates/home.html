@@ -2,10 +2,16 @@
 
 {% block content %}
     <h1>{% block title %} Songs {% endblock %}</h1>
+    <label for="title"><h3>Search</h3></label>
+    <input type="text" name="search"
+            id="search"
+            placeholder="Search Title/Artist/Album"
+            value="{{ search_string }}"></input>
+            <button id="search_button" onclick="search()">search</button>
+    <br><br>
     {% for song in songs %}
         <div class='song'>
-            <p>{{ song['created'] }}</p>
-            <h2>{{ song['title'] }}</h2>
+            <h2>{{ song['title'] }} From {{ song['album'] }}</h2>
             <p>{{ song['artist'] }}</p>
 			<a href="/player/{{song['id']}}">play</a>
             <a href="/delete/{{song['id']}}">delete</a>

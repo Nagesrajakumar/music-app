@@ -34,6 +34,7 @@
         var file = input.files[0];
         var title = document.getElementById("title").value;
         var artist = document.getElementById("artist").value;
+        var album = document.getElementById("album").value;
         //converting file to blob
         var fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {type: file.type });
 
@@ -41,7 +42,7 @@
         fd.append('file', fileBlob, 'file');
         fd.append("title",title);
         fd.append("artist",artist);
-
+        fd.append("album",album);
         fetch('http://127.0.0.1:5000/upload', {
           method: 'POST',
           body: fd

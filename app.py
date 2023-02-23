@@ -20,7 +20,7 @@ def home():
     conn = get_db_connection()
     songs = conn.execute('SELECT * FROM songs').fetchall()
     conn.close()
-    filtered_songs = filter(lambda song: search_string in song['title'] or search_string in song['artist'], songs)
+    filtered_songs = filter(lambda song: search_string in song['title'] or search_string in song['artist'] or search_string in song['album'], songs)
     return render_template("home.html",songs=filtered_songs, search_string=search_string)
 
 @app.route('/player/<id>', methods=['GET'])
@@ -44,16 +44,20 @@ def upload():
     if(request.method == 'POST'):
         title = request.form['title']
         artist = request.form['artist']
+        album = request.form['album']
         if not title:
             response = jsonify("Title cannot be empty")
             return response;
         elif not artist:
             response = jsonify("Artist name cannot be empty")
             return response;
+        elif not album:
+            response = jsonify("Album cannot be empty")
+            return response
         else:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute('INSERT INTO songs (title,artist) VALUES (?, ?) RETURNING id',(title,artist))
+            cursor.execute('INSERT INTO songs (title,artist,album) VALUES (?, ?, ?) RETURNING id',(title,artist,album))
             row = cursor.fetchone()
             (inserted_id, ) = row if row else None
             file = request.files['file']
